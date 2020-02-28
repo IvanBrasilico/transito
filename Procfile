@@ -1,1 +1,1 @@
-web: gunicorn wsgi_bhadrasana:app
+web: gunicorn wsgi_production:app
