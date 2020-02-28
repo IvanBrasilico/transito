@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/IvanBrasilico/transito.svg?branch=master)](https://travis-ci.org/IvanBrasilico/transito) 
+
+
 
 # Form Avaliação Trânsito
 Um pequeno boilerplate exemplificando uma aplicação Flask+Bootstrap+JQuery, utilizando os mesmos modelos que no AJNA.
