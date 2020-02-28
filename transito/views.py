@@ -42,7 +42,7 @@ def configure_app(sqlsession):
 def log_every_request():
     """Envia cada requisição ao log."""
     name = 'No user'
-    #if current_user and current_user.is_authenticated:
+    # if current_user and current_user.is_authenticated:
     #    name = current_user.name
     logger.info(request.url + ' - ' + name)
 
