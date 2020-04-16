@@ -8,3 +8,5 @@ AJNA_boilerplate.egg-info
 htmlcov
 /AJNA_transito.egg-info/*
 *.log
+DossiesAmostra/*
+BancoDados-Amostra/*

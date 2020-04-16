@@ -1,7 +1,9 @@
 import sys
+
 from flask import request, render_template, url_for, flash, jsonify
 from flask_login import login_required
 from werkzeug.utils import redirect
+
 sys.path.append('.')
 
 from transito.conf import logger
@@ -171,41 +173,3 @@ def dta_app(app):
             logger.error(str(err), exc_info=True)
             return 'Erro: %s' % str(err), 500
         return imagem
-
-
-if __name__ == '__main__':
-    import requests
-    import os
-    import sys
-
-    sys.path.append('.')
-
-    BASE_URL = 'http://localhost:5010'
-    filename = sys.argv[1]
-    files = {'file': open(filename, 'rb')}
-    print(files)
-    rv = requests.post(BASE_URL + '/api/processa_pdf',
-                       data={'numero_dta': '1234'},
-                       files=files)
-    print(rv.status_code)
-    print(rv.text)
-
-    rv = requests.get(BASE_URL + '/api/get_documentos/1234')
-    print(rv.status_code)
-    print(rv.text)
-
-    rv = requests.post(BASE_URL + '/api/get_npaginas',
-                       data={'numero_dta': '1234',
-                             'filename': os.path.basename(filename)})
-    print(rv.status_code)
-    print(rv.text)
-    npaginas = int(rv.json()['npaginas'])
-
-    rv = requests.post(BASE_URL + '/api/get_paginas',
-                       data={'numero_dta': '1234',
-                             'filename': os.path.basename(filename)})
-    print(rv.status_code)
-    print(rv.text)
-
-    for pagina in rv.json()['paginas']:
-        print(pagina)
