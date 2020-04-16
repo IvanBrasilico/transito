@@ -173,3 +173,10 @@ def dta_app(app):
             logger.error(str(err), exc_info=True)
             return 'Erro: %s' % str(err), 500
         return imagem
+
+    @app.route('/api/get_pagina_id/<id>', methods=['GET'])
+    @csrf.exempt
+    def api_get_pagina_id(id):
+        conn = app.config.get('mongo_transito')
+        imagem = get_pagina_id(conn, id)
+    return imagem

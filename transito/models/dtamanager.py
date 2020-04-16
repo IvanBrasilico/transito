@@ -5,7 +5,6 @@ import fitz
 from PIL import Image
 from bson import ObjectId
 from gridfs import GridFS
-from pymongo import MongoClient
 
 if sys.platform == 'win32':
     sys.path.append('../ajna_docs/commons')
@@ -119,6 +118,11 @@ def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int) -> Image:
         raise KeyError('Página não encontrada com os parâmetros: ' % params)
     fs = GridFS(mongodb)
     return Image.open(fs.get(document['_id']))
+
+
+def get_pagina_id(conn, id: str) -> Image:
+    fs = GridFS(conn)
+    return Image.open(fs.get(ObjectId(id)))
 
 
 if __name__ == '__main__':
