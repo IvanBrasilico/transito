@@ -18,7 +18,7 @@ Em um prompt Linux com Python3.6+, executar:
 #cd transito
 #python3.6 -m venv venv
 #. venv/bin/activate
-#pip install .[dev] # <-em produção não precisa do [dev] 
+#pip install -e .[dev] # <-em produção não precisa do [dev] 
 ```
 
 Em Windows com Anaconda instalado, abrir um prompt do Anaconda
@@ -27,7 +27,7 @@ Em Windows com Anaconda instalado, abrir um prompt do Anaconda
 #cd transito
 #python -m venv venv
 #venv/Scripts/activate.bat
-#pip install .[dev] 
+#pip install -e .[dev] 
 ```
 
 * Inicializar o Banco de Dados
