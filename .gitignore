@@ -1,5 +1,5 @@
 # Project exclude paths
-/venv/
+*venv/
 .idea
 .tox
 AJNA_boilerplate.egg-info
