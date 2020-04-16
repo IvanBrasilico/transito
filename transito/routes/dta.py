@@ -1,6 +1,6 @@
 import sys
 
-from flask import request, render_template, url_for, flash, jsonify
+from flask import request, render_template, url_for, flash, jsonify, Response
 from flask_login import login_required
 from werkzeug.utils import redirect
 
@@ -9,17 +9,18 @@ sys.path.append('.')
 from transito.conf import logger
 from transito.forms.dta import AnexoForm
 from transito.models.dtamanager import lista_anexos, get_anexo, edita_anexo, processa_pdf_stream, \
-    insert_pagina, get_documentos, get_paginas, get_npaginas, get_pagina
+    insert_pagina, get_documentos, get_paginas, get_npaginas, get_pagina, get_pagina_id
 from transito.views import csrf, valid_file
 
 
 def dta_app(app):
-    @app.route('/transito', methods=['GET', 'POST'])
-    def transito():
+    @app.route('/avalia', methods=['GET', 'POST'])
+    def avalia():
         session = app.config.get('dbsession')
         dta_id = request.args.get('dta_id', 1)
         anexo_id = request.args.get('item_id')
         oform = AnexoForm()
+        listaanexos = []
         try:
             listaanexos = lista_anexos(session, dta_id)
             if anexo_id and anexo_id is not None:
@@ -172,11 +173,12 @@ def dta_app(app):
         except Exception as err:
             logger.error(str(err), exc_info=True)
             return 'Erro: %s' % str(err), 500
-        return imagem
+        return Response(response=image, mimetype=mimetype)
 
     @app.route('/api/get_pagina_id/<id>', methods=['GET'])
     @csrf.exempt
     def api_get_pagina_id(id):
         conn = app.config.get('mongo_transito')
-        imagem = get_pagina_id(conn, id)
-    return imagem
+        image = get_pagina_id(conn, id)
+        mimetype = 'image/png'
+        return Response(response=image, mimetype=mimetype)

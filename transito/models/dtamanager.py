@@ -116,13 +116,14 @@ def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int) -> Image:
     print(document)
     if document is None:
         raise KeyError('Página não encontrada com os parâmetros: ' % params)
-    fs = GridFS(mongodb)
-    return Image.open(fs.get(document['_id']))
+    return get_pagina_id(conn, document['_id'])
 
 
-def get_pagina_id(conn, id: str) -> Image:
+def get_pagina_id(conn, oid: str) -> Image:
     fs = GridFS(conn)
-    return Image.open(fs.get(ObjectId(id)))
+    _id = ObjectId(oid)
+    grid_out = fs.get(_id)
+    return grid_out.read()
 
 
 if __name__ == '__main__':

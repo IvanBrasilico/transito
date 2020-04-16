@@ -62,7 +62,7 @@ def get_paginas(base_url, numero_dta, filename):
 
 
 def get_pagina_id(base_url, id):
-    rv = requests.post(base_url + '/api/get_pagina/%s' % id)
+    rv = requests.get(base_url + '/api/get_pagina_id/%s' % id)
     print(rv.status_code)
 
 
@@ -81,7 +81,7 @@ def cli(base_url, numero_dta, filename, carregar, oid, usage):
         print(USAGE)
         sys.exit(0)
     if oid:
-        get_pagina_id(oid)
+        get_pagina_id(base_url, oid)
     else:
         if carregar:
             carrega_pdf(base_url, numero_dta, filename)

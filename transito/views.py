@@ -91,6 +91,6 @@ def index():
 def mynavbar():
     """Menu da aplicação."""
     items = [View('Home', 'index'),
-             View('Avaliar PDFs trânsito', 'dta'),
+             View('Avaliar PDFs trânsito', 'avalia'),
              ]
     return Navbar(logo, *items)
