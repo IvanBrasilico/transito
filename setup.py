@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='AJNA-boilerplate',
-    description='Boilerplate com aspectos básicos do desenvolvimento web no AJNA',
+    name='AJNA-transito',
+    description='Módulo de conformidade do trânsito',
     version='0.0.1',
     url='https://github.com/IvanBrasilico/transito',
     license='GPL',
@@ -21,7 +21,9 @@ setup(
         'Flask-wtf',
         'gunicorn',
         'lxml',
+        'pymongo',
         'pymysql',
+        'requests',
         'sqlalchemy'
     ],
     setup_requires=['pytest-runner'],

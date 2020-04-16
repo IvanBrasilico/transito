@@ -25,7 +25,7 @@ nav = Nav()
 nav.init_app(app)
 
 
-def configure_app(sqlsession):
+def configure_app(sqlsession, mongodb):
     """Configurações gerais e de Banco de Dados da Aplicação."""
     app.config['DEBUG'] = os.environ.get('DEBUG', 'None') == '1'
     if app.config['DEBUG'] is True:
@@ -35,7 +35,32 @@ def configure_app(sqlsession):
     app.config['SECRET_KEY'] = SECRET
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['sqlsession'] = sqlsession
+    app.config['mongo_transito'] = mongodb
     return app
+
+
+ALLOWED_EXTENSIONS = set(['csv', 'zip', 'txt', 'png', 'jpg', 'jpeg', 'sch'])
+
+
+def allowed_file(filename, extensions=ALLOWED_EXTENSIONS):
+    """Checa extensões permitidas."""
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in extensions
+
+
+def valid_file(file, extensions=['jpg', 'jpeg', 'png']):
+    """Valida arquivo passado e retorna validade e mensagem."""
+    if not file or file.filename == '' or not allowed_file(file.filename, extensions):
+        if not file:
+            mensagem = 'Arquivo nao informado'
+        elif not file.filename:
+            mensagem = 'Nome do arquivo vazio'
+        else:
+            mensagem = 'Nome de arquivo não permitido: ' + \
+                       file.filename
+            # print(file)
+        return False, mensagem
+    return True, None
 
 
 @app.before_request
