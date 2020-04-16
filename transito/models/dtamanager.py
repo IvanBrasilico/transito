@@ -10,9 +10,9 @@ from pymongo import MongoClient
 if sys.platform == 'win32':
     sys.path.append('../ajna_docs/commons')
 sys.path.append('.')
-from ajna_commons.flask.log import logger
+from transito.conf import logger
 
-from bhadrasana.models.dta import Anexo
+from transito.models.dta import Anexo
 
 
 def edita_anexo(session, params):
@@ -109,7 +109,7 @@ def get_npaginas(mongodb, numero_dta: str, filename: str) -> int:
     return mongodb.fs.files.count_documents(params)
 
 
-def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int)-> Image:
+def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int) -> Image:
     params = {'filename': filename,
               'metadata.numero_dta': numero_dta,
               'metadata.pagina': npagina}
@@ -123,6 +123,9 @@ def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int)-> Image:
 
 if __name__ == '__main__':
     import os
+
+    sys.path.append('.')
+
     filename = sys.argv[1]
     print('Testando PDF %s ' % filename)
     mongodb = MongoClient('mongodb://localhost')

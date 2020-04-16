@@ -33,7 +33,7 @@ SQL_URI = os.environ.get('SQL_URI', 'mysql+pymysql://ivan@localhost:3306/transit
 engine = create_engine(SQL_URI)
 Session = sessionmaker(bind=engine)
 session = Session()
-app = configure_app(session)
+app = configure_app(session, mongodb)
 dta_app(app)
 
 if __name__ == '__main__':

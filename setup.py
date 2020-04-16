@@ -21,8 +21,10 @@ setup(
         'Flask-wtf',
         'gunicorn',
         'lxml',
+        'Pillow',
         'pymongo',
         'pymysql',
+        'pymupdf',
         'requests',
         'sqlalchemy'
     ],

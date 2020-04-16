@@ -1,4 +1,8 @@
+import sys
 from flask_wtf import FlaskForm
+
+sys.path.append('.')
+
 from transito.models.dta import Enumerado
 from wtforms import IntegerField, TextAreaField, SelectField, BooleanField, StringField
 

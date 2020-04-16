@@ -6,3 +6,5 @@ AJNA_boilerplate.egg-info
 .eggs
 /.coverage
 htmlcov
+/AJNA_transito.egg-info/*
+*.log

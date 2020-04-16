@@ -1,6 +1,8 @@
+import sys
 from flask import request, render_template, url_for, flash, jsonify
 from flask_login import login_required
 from werkzeug.utils import redirect
+sys.path.append('.')
 
 from transito.conf import logger
 from transito.forms.dta import AnexoForm
@@ -176,7 +178,9 @@ if __name__ == '__main__':
     import os
     import sys
 
-    BASE_URL = 'http://localhost:5005'
+    sys.path.append('.')
+
+    BASE_URL = 'http://localhost:5010'
     filename = sys.argv[1]
     files = {'file': open(filename, 'rb')}
     print(files)

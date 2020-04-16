@@ -1718,3 +1718,17 @@ WHERE dta_anexos.dta_id = %(dta_id_1)s]
 2020-02-28 11:25 transito     INFO     http://localhost:5010/static/material_logo.svg - No user
 2020-02-28 11:25 transito     INFO     http://localhost:5010/transito/dta?dta_id=1&item_id=2 - No user
 2020-02-28 11:25 transito     INFO     http://localhost:5010/static/material_logo.svg - No user
+2020-04-16 08:03 transito     INFO     http://localhost:5010/api/processa_pdf - No user
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 1 MD5 7838a05749a0956f805ebd23a24b5fa5  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 2 MD5 6bf5ac3646335bfba5a125e98629988b  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 3 MD5 f296b263a47a290ec2b1a1368adb5e86  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 4 MD5 7a39338293566bacc49fbd373cf4131c  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 5 MD5 7a4eac75ca124f0d150e6dea16197598  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 6 MD5 4203c85924001fa75cc82d3513c3ab18  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 7 MD5 71fb8f38ab501c92846146a380fd538e  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 8 MD5 7707065750b6e567f5f00e23ad957ad3  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 9 MD5 ccc4f46bd57fb562ce1e282770c5debc  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     WARNING   Arquivo robust_similarity.pdf Pagina 10 MD5 ce5acc441f5790455548d8a21fa4717a  tentativa de inserir pela segunda vez!!
+2020-04-16 08:03 transito     INFO     http://localhost:5010/api/get_documentos/1234 - No user
+2020-04-16 08:03 transito     INFO     http://localhost:5010/api/get_npaginas - No user
+2020-04-16 08:03 transito     INFO     http://localhost:5010/api/get_paginas - No user
