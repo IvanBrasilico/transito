@@ -3,7 +3,8 @@ Script de linha de comando para acessar/testar API
 
 """
 import fitz
-
+import warnings
+warnings.simplefilter('ignore')
 USAGE = """
 Script de linha de comando para acessar/testar API
 python cli/cliente_api.py         # Esta tela
