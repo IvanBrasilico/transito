@@ -61,13 +61,15 @@ def carrega_pdf(base_url, numero_dta, filename):
     print(files)
     rv = requests.post(base_url + '/api/processa_pdf',
                        data={'numero_dta': numero_dta},
-                       files=files)
+                       files=files,
+                       verify=False)
     print(rv.status_code)
     print(rv.text)
 
 
 def lista_documentos(base_url, numero_dta):
-    rv = requests.get(base_url + '/api/get_documentos/%s' % numero_dta)
+    rv = requests.get(base_url + '/api/get_documentos/%s' % numero_dta,
+                      verify=False)
     print(rv.status_code)
     print(rv.text)
 
@@ -75,19 +77,22 @@ def lista_documentos(base_url, numero_dta):
 def get_paginas(base_url, numero_dta, filename):
     rv = requests.post(base_url + '/api/get_npaginas',
                        data={'numero_dta': numero_dta,
-                             'filename': os.path.basename(filename)})
+                             'filename': os.path.basename(filename)},
+                       verify=False)
     print(rv.status_code)
     print(rv.text)
     npaginas = int(rv.json()['npaginas'])
     rv = requests.post(base_url + '/api/get_paginas',
                        data={'numero_dta': numero_dta,
-                             'filename': os.path.basename(filename)})
+                             'filename': os.path.basename(filename)},
+                       verify=False)
     print(rv.status_code)
     print(rv.text)
 
 
 def get_pagina_id(base_url, id):
-    rv = requests.get(base_url + '/api/get_pagina_id/%s' % id)
+    rv = requests.get(base_url + '/api/get_pagina_id/%s' % id,
+                      verify=False)
     print(rv.status_code)
 
 

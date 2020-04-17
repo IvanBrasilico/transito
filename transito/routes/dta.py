@@ -103,12 +103,15 @@ def dta_app(app):
                 return jsonify({'msg': mensagem}), 500
             # content = file.read()
             logger.info('Chamar processa_pdf_bytes')
-            _id = insert_pagina(conn, file.read(),
-                                filename, numero_dta, npagina)
+            _id, exists = insert_pagina(conn, file.read(),
+                                        numero_dta, filename, npagina)
+            if exists:
+                return jsonify({'msg': 'Página %s já existente.' % npagina +
+                                       ' id: %s' % str(_id)}), 201
         except Exception as err:
             logger.error(str(err), exc_info=True)
             return jsonify({'msg': 'Erro: %s' % str(err)}), 500
-        return jsonify({'msg': 'Página %s incluída com sucesso.' % npagina + \
+        return jsonify({'msg': 'Página %s incluída com sucesso.' % npagina +
                                ' id: %s' % str(_id)}), 201
 
     @app.route('/api/get_documentos/<numero_dta>', methods=['GET'])
@@ -168,7 +171,7 @@ def dta_app(app):
         if req_data is None:
             req_data = request.form
         try:
-            numero_dta, filename, npagina = form_dta_filename(req_data)
+            numero_dta, filename, npagina = form_dta_filename_pagina(req_data)
             image = get_pagina(conn, numero_dta, filename, npagina)
         except Exception as err:
             logger.error(str(err), exc_info=True)

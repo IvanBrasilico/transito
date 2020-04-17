@@ -49,7 +49,22 @@ def gera_objeto(object, session, params):
 
 
 def insert_pagina(mongodb, png_image,
-                  numero_dta: str, filename: str, npagina: int) -> ObjectId:
+                  numero_dta: str, filename: str,
+                  npagina: int) -> (ObjectId, bool):
+    """
+    Insere um png no fs.files. Se existir arquivo com mesmo md5 e filename,
+    considera inserção repetida e retorna _id do existente.
+
+    :param mongodb: Conexão e banco MongoDB
+    :param png_image: conteúdo da imagem
+    :param numero_dta: metadata.numero_dta
+    :param filename: filename
+    :param npagina: metadata.npagina
+    :return: (ObjectId, True|False)
+        ObjectId gerado ou _id de arquivo se já existe
+        True se arquivo existe
+        False se não existe e foi gerado novo documento
+    """
     fs = GridFS(mongodb)
     content = png_image
     m = md5()
@@ -63,11 +78,11 @@ def insert_pagina(mongodb, png_image,
                 (filename, npagina, m.hexdigest())
             )
             # File exists, abort!
-            return grid_out._id
+            return grid_out._id, True
     # Insert File
     params = {'numero_dta': numero_dta, 'pagina': npagina}
     return fs.put(content, filename=filename,
-                  metadata=params)
+                  metadata=params), False
 
 
 def _processa_pdf(mongodb, numero_dta: str, filename: str, pdf):
