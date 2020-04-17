@@ -92,7 +92,7 @@ def dta_app(app):
     def api_insert_pagina():
         conn = app.config.get('mongo_transito')
         try:
-            numero_dta, filename, npagina = form_dta_filename(request.form)
+            numero_dta, filename, npagina = form_dta_filename_pagina(request.form)
             file = request.files.get('file')
             if not file:
                 return jsonify({'msg': 'Arquivo vazio'}), 500
@@ -169,10 +169,11 @@ def dta_app(app):
             req_data = request.form
         try:
             numero_dta, filename, npagina = form_dta_filename(req_data)
-            imagem = get_pagina(conn, numero_dta, filename, npagina)
+            image = get_pagina(conn, numero_dta, filename, npagina)
         except Exception as err:
             logger.error(str(err), exc_info=True)
             return 'Erro: %s' % str(err), 500
+        mimetype = 'image/png'
         return Response(response=image, mimetype=mimetype)
 
     @app.route('/api/get_pagina_id/<id>', methods=['GET'])

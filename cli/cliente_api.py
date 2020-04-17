@@ -2,23 +2,25 @@
 Script de linha de comando para acessar/testar API
 
 """
+import fitz
+
 USAGE = """
 Script de linha de comando para acessar/testar API
-python cli/testa_api.py         # Esta tela
-python cli/testa_api.py -usage  # Esta tela
-python cli/testa_api.py -help   # Mostra opções
+python cli/cliente_api.py         # Esta tela
+python cli/cliente_api.py -usage  # Esta tela
+python cli/cliente_api.py -help   # Mostra opções
 # Informe o endereço do Servidor com:
 # --base_url https://ajna.labin.rf08.srf/transito 
 # Envia um PDF local para o Servidor
-python cli/testa_api.py --carregar --numero_dta=1234 --filename msc-thesis.pdf
-# Envia um PDF para Servidor gerando PNGs localmente (Não implementado)
-python cli/testa_api.py --carregarpngs --numero_dta=1234 --filename msc-thesis.pdf
+python cli/cliente_api.py --carregar --numero_dta=1234 --filename msc-thesis.pdf
+# Envia um PDF para Servidor gerando PNGs localmente
+python cli/cliente_api.py --carregarpngs --numero_dta=1234 --filename msc-thesis.pdf
 # Lista documentos(filenames) vinculados à DTA no Servidor
-python cli/testa_api.py --numero_dta=1234
+python cli/cliente_api.py --numero_dta=1234
 # Lista páginas do documento(filename) vinculado à DTA no Servidor
-python cli/testa_api.py --numero_dta=1234 --filename msc-thesis.pdf
+python cli/cliente_api.py --numero_dta=1234 --filename msc-thesis.pdf
 # Faz download do PNG
-python cli/testa_api.py --oid abcdef0012126e
+python cli/cliente_api.py --oid abcdef0012126e
 """
 import os
 import sys
@@ -28,7 +30,30 @@ import requests
 
 sys.path.append('.')
 
-BASE_URL = 'http://localhost:5010'
+BASE_URL = 'https://ajna.labin.rf08.srf/transito'
+
+
+def carrega_pngs(base_url, numero_dta, filename):
+    """
+    Processa PDF localmente e envia somente PNGs
+
+    :param base_url: Endereço raiz do Servidor da API
+    :param numero_dta: Número da DTA cujo anexo está sendo informado
+    :param filename: Arquivo de anexo da DTA
+    """
+    pdf = fitz.open(filename)
+    for npagina, page in enumerate(pdf, 1):
+        pix = page.getPixmap()
+        files = {'file': ('%s.png' %npagina, pix.getPNGData())}
+        print('Enviando página %s' % npagina)
+        rv = requests.post(base_url + '/api/insert_pagina',
+                           data={'numero_dta': numero_dta,
+                                 'filename': filename,
+                                 'npagina': npagina},
+                           files=files,
+                           verify=False)
+        print(rv.status_code)
+        print(rv.text)
 
 
 def carrega_pdf(base_url, numero_dta, filename):
@@ -72,11 +97,15 @@ def get_pagina_id(base_url, id):
 @click.option('--numero_dta', help='Número da DTA')
 @click.option('--filename', help='Nome do arquivo anexo')
 @click.option('--carregar', is_flag=True,
-              help='Se indicado, carrega filename. Se não indicado, consulta Servidor.')
+              help='Se indicado, carrega filename.' + \
+                   ' Se não indicado, consulta Servidor.')
+@click.option('--carregarpngs', is_flag=True,
+              help='Se indicado, processa filename localmente e envia pngs.' + \
+                   '. Se não indicado, consulta Servidor.')
 @click.option('--oid', help='ObjectId do arquivo png a baixar')
 @click.option('--usage', is_flag=True,
               help='Mostrar exemplos de uso.')
-def cli(base_url, numero_dta, filename, carregar, oid, usage):
+def cli(base_url, numero_dta, filename, carregar, carregarpngs, oid, usage):
     if usage:
         print(USAGE)
         sys.exit(0)
@@ -85,6 +114,8 @@ def cli(base_url, numero_dta, filename, carregar, oid, usage):
     else:
         if carregar:
             carrega_pdf(base_url, numero_dta, filename)
+        elif carregarpngs:
+            carrega_pngs(base_url, numero_dta, filename)
         else:
             if filename:
                 get_paginas(base_url, numero_dta, filename)
