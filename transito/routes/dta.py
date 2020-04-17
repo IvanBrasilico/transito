@@ -108,8 +108,8 @@ def dta_app(app):
         except Exception as err:
             logger.error(str(err), exc_info=True)
             return jsonify({'msg': 'Erro: %s' % str(err)}), 500
-        return jsonify({'msg': 'Página %s incluída com sucesso.' + \
-                               ' id: %s' % (npagina, str(_id))}), 201
+        return jsonify({'msg': 'Página %s incluída com sucesso.' % npagina + \
+                               ' id: %s' % str(_id)}), 201
 
     @app.route('/api/get_documentos/<numero_dta>', methods=['GET'])
     @csrf.exempt
