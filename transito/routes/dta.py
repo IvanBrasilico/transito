@@ -1,5 +1,6 @@
 import sys
 
+
 from flask import request, render_template, url_for, flash, jsonify, Response
 from flask_login import login_required
 from werkzeug.utils import redirect
@@ -12,11 +13,43 @@ from transito.models.dtamanager import lista_anexos, get_anexo, edita_anexo, pro
     insert_pagina, get_documentos, get_paginas, get_npaginas, get_pagina, get_pagina_id
 from transito.views import csrf, valid_file
 
+from transito.models import api_client
+
+base_url = api_client.BASE_URL
+# TODO: Descomentar linha abaixo para consultar no Servidor.
+#  Linha abaixo é apenas para testes locais
+base_url = 'https://localhost/transito'
 
 def dta_app(app):
+    @app.route('/avalia_api', methods=['GET', 'POST'])
+    def avalia_api():
+        session = app.config.get('sqlsession')
+        numero_dta = request.args.get('numero_dta')
+        filename = request.args.get('filename')
+        npagina = request.args.get('npagina', 1)
+        maxpaginas = 0
+        listaanexos = []
+        try:
+            listaanexos = api_client.lista_documentos(base_url, numero_dta)
+            if filename:
+                maxpaginas = api_client.get_npaginas(base_url, numero_dta, filename)
+            if not npagina:
+                npagina = 1
+            print(listaanexos, type(listaanexos))
+        except Exception as err:
+            flash(err)
+            logger.error(err)  # , exc_info=True)
+        return render_template('dta_anexos_api.html',
+                               numero_dta=numero_dta,
+                               filename=filename,
+                               npagina=npagina,
+                               maxpaginas=maxpaginas,
+                               listaanexos=listaanexos)
+
+
     @app.route('/avalia', methods=['GET', 'POST'])
     def avalia():
-        session = app.config.get('dbsession')
+        session = app.config.get('sqlsession')
         dta_id = request.args.get('dta_id', 1)
         anexo_id = request.args.get('item_id')
         oform = AnexoForm()
@@ -33,14 +66,18 @@ def dta_app(app):
                                listaanexos=listaanexos,
                                oform=oform)
 
-    @app.route('/anexo', methods=['POST'])
-    @login_required
+    @app.route('/anexo', methods=['GET', 'POST'])
+    # @login_required
     def dta_anexo():
-        session = app.config.get('dbsession')
-        anexo_form = AnexoForm(request.form)
-        anexo_form.validate()
-        anexo = edita_anexo(session, dict(anexo_form.data.items()))
-        return redirect(url_for('transito', dta_id=anexo.dta_id))
+        session = app.config.get('sqlsession')
+        try:
+            anexo_form = AnexoForm(request.form)
+            anexo_form.validate()
+            anexo = edita_anexo(session, dict(anexo_form.data.items()))
+        except Exception as err:
+            flash(err)
+            logger.error(err, exc_info=True)
+        return redirect(url_for('avalia', dta_id=anexo.dta_id))
 
     @app.route('/api/processa_pdf', methods=['POST'])
     @csrf.exempt
@@ -169,7 +206,7 @@ def dta_app(app):
         conn = app.config.get('mongo_transito')
         req_data = request.json
         if req_data is None:
-            req_data = request.form
+            req_data = request.args
         try:
             numero_dta, filename, npagina = form_dta_filename_pagina(req_data)
             image = get_pagina(conn, numero_dta, filename, npagina)

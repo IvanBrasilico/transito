@@ -67,7 +67,7 @@ if __name__ == '__main__':
                         ])
 
     dta = DTA()
-    dta.numero = '123'
+    dta.numero = '1234'
     session.add(dta)
     session.commit()
     session.refresh(dta)

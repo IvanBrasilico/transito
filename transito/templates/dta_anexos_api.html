@@ -1,0 +1,44 @@
+{% extends "layout.html" %} {% block content %} {{super()}}
+<div id="main" class="container-fluid">
+    <div id="pdf_view" class="row">
+        <div id="list" class="col-sm-4">
+            &nbsp;<br>
+            <div class="table">
+                <table class="inlineTable table table-bordered table-hover table-responsive"
+                       id="filtro_personalizado_table" style="width:100%;">
+                    <thead>
+                    <tr>
+                        <th style="word-wrap: break-word; max-width: 210px; min-width: 200px;">Nome do arquivo</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for filename in listaanexos %}
+                    <tr>
+                        <td>
+                            <a href="avalia_api?numero_dta={{numero_dta}}&filename={{filename}}">
+                                {{filename}}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="png" class="col-sm-6">
+            <input type="number" min="1" max="{{maxpaginas}}" value="{{npagina}}" onchange="MudaPagina(this.value)">
+            <img src="api/get_pagina?numero_dta={{numero_dta}}&filename={{filename}}&npagina={{npagina}}"
+                   width="400px" height="500px">
+        </div>
+    </div>
+    <div id="bottom" class="row col-sm-12">
+        AJNA - Receita Federal do Brasil 2017
+    </div>
+</div>
+{% endblock %} {% block scripts %} {{super()}}
+<script>
+    function MudaPagina(npagina){
+        window.location.href = "avalia_api?numero_dta={{numero_dta}}&filename={{filename}}&npagina=" + npagina;
+    }
+</script>
+{% endblock %}

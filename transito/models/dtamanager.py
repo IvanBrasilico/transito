@@ -28,11 +28,11 @@ def lista_anexos(session, dta_id):
     return session.query(Anexo).filter(Anexo.dta_id == dta_id).all()
 
 
-def get_anexo(session, id: int = None):
-    if id is None or id == 'None':
+def get_anexo(session, anexo_id: int = None):
+    if anexo_id is None or anexo_id == 'None':
         anexo = Anexo()
         return anexo
-    return session.query(Anexo).filter(Anexo.id == id).one_or_none()
+    return session.query(Anexo).filter(Anexo.id == anexo_id).one_or_none()
 
 
 def gera_objeto(object, session, params):
@@ -131,7 +131,7 @@ def get_pagina(mongodb, numero_dta: str, filename: str, npagina: int) -> Image:
     print(document)
     if document is None:
         raise KeyError('Página não encontrada com os parâmetros: ' % params)
-    return get_pagina_id(conn, document['_id'])
+    return get_pagina_id(mongodb, document['_id'])
 
 
 def get_pagina_id(conn, oid: str) -> Image:

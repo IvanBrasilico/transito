@@ -73,6 +73,7 @@ def lista_documentos(base_url, numero_dta):
                       verify=False)
     print(rv.status_code)
     print(rv.text)
+    return
 
 
 def get_paginas(base_url, numero_dta, filename):
