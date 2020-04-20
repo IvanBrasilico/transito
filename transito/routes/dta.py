@@ -16,9 +16,9 @@ from transito.views import csrf, valid_file
 from transito.models import api_client
 
 base_url = api_client.BASE_URL
-# TODO: Descomentar linha abaixo para consultar no Servidor.
+# TODO: Tranformar em comentário linha abaixo para consultar no Servidor.
 #  Linha abaixo é apenas para testes locais
-base_url = 'https://localhost/transito'
+# base_url = 'https://localhost/transito'
 
 def dta_app(app):
     @app.route('/avalia_api', methods=['GET', 'POST'])
