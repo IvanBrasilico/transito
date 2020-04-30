@@ -29,7 +29,7 @@ from transito.views import configure_app
 MONGODB_URI = os.environ.get('MONGODB_URI2', 'mongodb://localhost/')
 conn = MongoClient(host=MONGODB_URI)
 mongodb = conn['conformidade_dossie']
-mongodb = conn['transito']
+# mongodb = conn['transito']
 SQL_URI = os.environ.get('SQL_URI2', 'mysql+pymysql://ivan@localhost:3306/transito')
 engine = create_engine(SQL_URI)
 Session = sessionmaker(bind=engine)
