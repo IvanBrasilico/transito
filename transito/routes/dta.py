@@ -23,16 +23,16 @@ base_url = api_client.BASE_URL
 def dta_app(app):
     @app.route('/avalia_api', methods=['GET', 'POST'])
     def avalia_api():
-        session = app.config.get('sqlsession')
+        conn = app.config.get('mongo_transito')
         numero_dta = request.args.get('numero_dta')
         filename = request.args.get('filename')
         npagina = request.args.get('npagina', 1)
         maxpaginas = 0
         listaanexos = []
         try:
-            listaanexos = api_client.lista_documentos(base_url, numero_dta)
+            listaanexos = get_documentos(conn, numero_dta)
             if filename:
-                maxpaginas = api_client.get_npaginas(base_url, numero_dta, filename)
+                maxpaginas = get_npaginas(conn, numero_dta, filename)
             if not npagina:
                 npagina = 1
             print(listaanexos, type(listaanexos))
